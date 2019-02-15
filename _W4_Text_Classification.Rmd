@@ -1,0 +1,56 @@
+---
+title: "Text Classification"
+author: "Jeff Jacobs"
+date: "11/27/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Automating Work That People Don't Want To Do (Should Be A Good Thing, Right?)
+
+Text classification, in my view, is one of the more intuitive and low-effort/high-return text-as-data methods. But I'm sorry to say that, although I don't think it will ever *eliminate* RA jobs[^darksecret], it does automate a huge portion of "standard" RA work. (In a minimally-reasonable economic system, automating jobs that nobody wants to do would be a "yay that gives me more time to do stuff I like" moment, not a "now I'm out of a job and I may have to sell my kidneys to survive" moment, but alas we're stuck with capitalism for now. But alas I digress.)
+
+A huge number of research projects in empirical social science require someone or some group to *label* a large set of (not necessarily textual) observations: from simple tasks like labeling whether or not a tweet is about Donald Trump, to more nuanced tasks like labeling op-eds as pro- or anti-[topic], to (in the numerical case) filling in missing values in a dataset[^missingvals]. In fact, while in the first two examples RAs would be generating *categorical* label variables, in the last example they'd be generating *continuous* variables as well. Machine learning can help automate the process in both situations, though I'll stick with the discrete labeling example here since most text-as-data projects involve discrete rather than continuous variables. (But one can easily think of counterexamples, e.g., rating the sentiment of an op-ed from -100 to 100 or determining trade volumes between states based on articles about trade agreements.)
+
+For this tutorial, we'll imagine a research project trying to determine 
+
+So first let's load the full voting data and narrow it down to the 2017 session
+```{r,load-votes}
+library(tidyverse)
+loaded_vars <- load("datasets/UNGA_votes/UNDescriptions1-72.RData")
+# This just tells us what specific variable(s) were loaded from the .RData file
+loaded_vars
+# Now use dplyr to get just session 72 out of Descriptions
+s72_data <- Descriptions %>% filter(session == 72)
+s72_data$short
+s72_data
+```
+Next up I'm using an information-theoretic quantity called "entropy" to find the most "controversial" resolutions. Entropy in this case quantifies how uncertain you are about which way a randomly-chosen country will vote: If all countries voted Yes on a resolution, the entropy of that resolution's vote is 0 since you know exactly what a randomly-chosen country's vote will be. If the vote is split, e.g. with 60 Abstains, 60 No votes, and 60 Yes votes, then the probabilities of a random country Abstaining, voting No, and voting Yes are all exactly $\frac{1}{3}$, which means that the entropy $H(V)$ of the vote distribution $V$ is
+
+$$H(V) = -P(\text{yes})\log_2(P(\text{yes})) + -P(\text{no})\log_2(P(\text{no})) + -P(\text{abstain})\log_2(P(\text{abstain}))$$
+$$= -\frac{1}{3}\log_2\left(\frac{1}{3}\right) + -\frac{1}{3}\log_2\left(\frac{1}{3}\right) + -\frac{1}{3}\log_2\left(\frac{1}{3}\right) = -\log_2\left(\frac{1}{3}\right) = \log_2(3) \approx 1.585\text{ bits,}$$
+the highest possible value in this case[^entropy].
+```{r,entropy}
+s72_data <- s72_data %>% mutate(num_votes=yes+no+abstain) %>%
+    mutate(p_yes=yes/num_votes,p_no=no/num_votes,p_abs=abstain/num_votes) %>%
+    rowwise() %>%
+    mutate(entropy = -p_yes*log(p_yes,base=2)-p_no*log(p_no,base=2)-p_abs*log(p_abs,base=2)) %>%
+    mutate(entropy = replace_na(entropy,0)) %>%
+    arrange(desc(entropy))
+s72_data
+```
+And we see that the most "controversial" vote in the UNGA that year was:
+```{r,iran}
+s72_data[1,c("unres","yes","no","abstain","short")]
+```
+So we'll make our research question "Can we predict whether a country will opt to condemn Iran's human rights abuses based on their speech at the United Nations General Debate that year?" We could make it a bit more substantial by (for example) using data across multiple years and predicting the *probability* that a given country will vote Yes on an Iran condemnation resolution, but for simplicity we'll stick with the 2017 speeches and Iran condemnation vote.
+
+Now, normally you would hire an RA for this, and 
+
+# Bibliography
+
+[^entropy]: Entropy actually has a wayyy deeper meaning than just low surprise vs. high surprise. So while we *could* scale it down here so 0 was minimum and 1 was maximum, the actual numeric value tells us something super interesting. As a hint, it's related to the average number of guesses we'd need to make about a random country's vote before we got the correct answer, if we employed the *best possible guessing scheme*. This should help elucidate the minimum entropy of 0 (you don't need to make *any* guesses, since you already know with 100% certainty what the country's vote will be), and it also hopefully makes sense if you think about a *non*-evenly-split vote: if 179 countries voted Yes while only one voted No, you could do quite well with a strategy of guessing Yes with probability 179/180 and No with probability 1/180. And indeed, the entropy $H \approx 0.045$ here tells us that with this strategy we'd need 0.045 guesses on average. If this is at all interesting to you, I highly recommend Simon DeDeo's [super entertaining introduction to Information Theory and Entropy](http://tuvalu.santafe.edu/~simon/it.pdf)! Also see [here](https://my.vanderbilt.edu/larrybartels/files/2011/12/Issue_Voting.pdf) for an example of entropy used as a regression covariate in an empirical political science paper.
+[^darksecret]: The "dark secret" of Machine Learning and Artificial Intelligence is that nearly all of it scretly requires *training data* that is generated by *humans*. Just like in the movie Snowpiercer where they have a small child cleaning dirt out of the train's engine, in AI we have hyper-exploited workers doing the actual work that generates our fancy algorithms, the same fancy algorithms that Jeff Bezos and Bill Gates make billions of dollars off of... I feel like there was some 19th century political economist who talked about this exact same situation in the non-digital world... can't quite put my finger on his name though.

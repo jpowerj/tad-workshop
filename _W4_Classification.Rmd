@@ -1,0 +1,84 @@
+---
+title: "Text Classification"
+---
+
+```{r,old-scotus]}
+#loaded_vars <- load("datasets/SCOTUS_Decisions.Rdata")
+#scotus_data <- SCDB_2018_01_justiceCentered_Citation
+#cur_data <- scotus_data %>% filter(term == 2017)
+```
+
+# 1. download manifesto numeric data (rile score)
+
+```{r,download-data}
+library(manifestoR)
+mp_setapikey("datasets/manifesto_apikey.txt")
+manifesto_data <- mp_maindataset()
+all_countries <- unique(manifesto_data$countryname)
+just_us <- manifesto_data %>% filter(countryname == "United States")
+us_rile <- just_us$rile
+just_us <- attach_year(just_us)
+just_us$numyear <- as.numeric(just_us$year)
+modern_us_data <- just_us %>% filter(numyear >= 1968)
+```
+
+# Step 2: Download the actual texts
+
+```{r,download-texts}
+the_docs <- mp_corpus(data.frame(party=modern_us_data$party,date=modern_us_data$date))
+```
+
+# Step 3: Make document-term matrix, then convert into format
+# usable by the Machine Learning library
+
+```{r,dtm}
+us_dtm <- DocumentTermMatrix(the_docs)
+# Old, replaced by LiblineaR library instead
+#alg <- naive_bayes(us_dtm_train,us_labels)
+#rf <- randomForest(x=us_dtm_train, y=us_labels, xtest=us_dtm_test, ytest=us_labels_test)
+
+require(LiblineaR)
+require(SparseM)
+source("W4_files/matrix_utils.R")
+
+# Convert to format that works with LiblineaR
+us_dtm_sm <- convertSlamToSparseM(us_dtm)
+
+# Split this LiblineaR format matrix into training/test
+train_indices <- 1:18
+num_train <- length(train_indices)
+test_indices <- 19:26
+num_test <- length(test_indices)
+us_dtm_sm_train <- us_dtm_sm[train_indices,]
+us_dtm_sm_test <- us_dtm_sm[test_indices,]
+# And split the labels up the same way
+us_labels_train <- modern_us$rile[train_indices]
+us_labels_test <- modern_us$rile[test_indices]
+```
+
+# Step 4: Train the model
+```{r,train-model}
+model <- LiblineaR(us_dtm_sm_train, us_labels_train)
+summary(model)
+# (sudden realization: https://tm4ss.github.io/docs/ has tutorials
+# on the same exact stuff we're doing here. So can use that as
+# secondary reference)
+test_predictions <- predict(model, us_dtm_sm_test)$predictions
+test_predictions
+us_labels_test
+error <- sum((test_predictions-us_labels_test)^2)
+error
+```
+
+Ok so we have a number representing the error, but we have no idea how to interpret it. So to get perspective on whether it's "good" or "bad", let's compare with a "baseline" method where you just always guess the *average* rile score of the training observations (so you never even look at the text itself).
+```{r,baseline}
+avg_rile_train <- mean(us_labels_train)
+avg_rile_train
+# Now "guess" this value for all the test labels and compute MSE
+fake_predictions <- rep(avg_rile_train, num_test)
+error <- sum((fake_predictions - us_labels_test)^2)
+error
+```
+
+So the error is 3x lower when we always guess the mean... which means something is very wrong :( working on fixing now.
+

@@ -1,0 +1,41 @@
+name: "CU Text-as-Data Workshop"
+output_dir: "../git_io/tad"
+#output_dir: "tad"
+exclude: ["README.md"]
+navbar:
+  title: "CU Text-as-Data Workshop"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Week 1: Intro to R"
+      href: 01_Introduction_to_R.html
+    - text: "Scraping"
+      href: 02_Web_Scraping.html
+    - text: "Frequency Analysis"
+      href: 03_Frequency_Analysis.html
+    - text: "Topic Models"
+      href: 04_Topic_Modeling_ggplot2.html
+    - text: "Sentiment"
+      href: 05_Named Entity Recognition.html
+    - text: "Dynamic Topic Models"
+      href: W4_Dynamic_Topic_Modeling.html
+    - text: "Social Media"
+      href: W4_Social_Media_Data.html
+  right:
+    - text: "Resources"
+      href: TAD_Resource_Extravaganza.html
+output:
+  html_document:
+    theme: cosmo
+    #theme: flatly
+    highlight: textmate
+    #include:
+    #  before_body: _custom_nav.html
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 3
+    #include:
+    #  after_body: footer.html
+    #css: styles.css
+    #css: "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"

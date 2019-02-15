@@ -1,0 +1,60 @@
+---
+title: "Text-As-Data Resource Extravaganza"
+author: "Jeff Jacobs"
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 3
+bibliography: TAD_Resources.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The question that motivated this list was: *What is "Text-As-Data"? Why should I care?*
+
+My lazy answer was originally: there are entire excursuses[^excurs] on exactly this question, in basically whatever field you could imagine, at this point. Then I decided I'd better give a quick overview of these resources (to show that I'm standing on the shoulders of giants), and that led to this list, which I will only skim in the workshop:
+
+# Social Science
+
+* *Overviews*
+    * The paper that, in my mind, *solidified* text-as-data as a "legitimate" social-scientific tool is @roberts_model_2016[^stm]. 
+    * However, slides from a slightly more novice-friendly presentation of the work are available [here](https://mimno.infosci.cornell.edu/nips2013ws/slides/stm.pdf).
+    * These are probably less cited than they should be...
+    * As for actual works rather than just surveys, my favorite text-as-data paper in social science is unquestionably @blaydes_mirrors_2018 (noticing a trend in these authors?), but I'm biased as a political theorist doing text-as-data stuff...
+* *Political Science*
+    * A canonical citation for text-as-data work in Political Science is @grimmer_text_2013. More recently, I like @wilkerson_large-scale_2017, it actually has an interestingly different take on the philosophy and "scientific" basis of TAD.
+    * If you're a political theorist (99% chance you're not but... dare to dream) then I'd *highly* recommend @london_re-imagining_2016. That's the paper I cite in basically all of my work, along with @skinner_meaning_1969, to try and explain what a "Text-as-data approach to Cambridge School historiography" means.
+    * Then for International Relations there's a lot of cool stuff. I have two papers on this front that I can talk about, but for a sampling of what's out there see @nielsen_lonely_2013.
+* *Sociology*
+    * I'm less aware of "canonical" citations in Sociology, obviously, but there are a couple of Annual Review of Sociology articles that give great overviews, e.g., @evans_machine_2016.
+    * And there is a ton of amazing text-as-data work in Sociology, but my favorite is probably @rule_lexical_2015. Full disclosure I'm friends with the first author Alix :P. 
+* *Videos* 
+    * Short-term option: I attended the first annual [Summer Institute for Computational Social Science](https://compsocialscience.github.io/summer-institute/2017/) so I can vouch for [Brandon Stewart's lecture at SICSS 2017](https://www.youtube.com/watch?v=AGIzIasTuLM) (Bonus: you'll see me awkwardly scurry out of frame at the beginning of the video).
+    * Medium-term option: [YouTube playlist of five lectures on text analysis](https://www.youtube.com/playlist?list=PL9UNgBC7ODr4qxGwCB_5f1A_1NQyiGCuP), again from SICSS 2017 so again I vouch.
+    * Long-term option: If you really wanna go HAM, Justin Grimmer (the author of that survey) has videos of his entire Text-As-Data course at Stanford [hiding in plain sight in a Box folder](https://stanford.app.box.com/v/Text-As-Data).
+
+# Humanities
+
+* Skipping over a more detailed rant about the history (can an AI be trained to do GADAMERIAN HERMENEUTICS?), I'll condense to just saying that @moretti_distant_2013 is the book I always turn to for an "interface" and a vocabulary for "translating" between the humanities and text-as-data worlds[^human].
+* Nowadays, however, I'm geeking out about the work coming out of [David Mimno's group](https://mimno.infosci.cornell.edu/), for example @baumer_comparing_2017. You can watch a brilliant video presentation of it by David himself [here](https://www.youtube.com/watch?v=fkzKfK2eEqs).
+
+# STEM (Computer Science)
+* I won't spend too much time on this, but if you're interested in the algorithmic and statistical "roots" of text-as-data the foundational works for different methods are as follows:
+    * Topic Modeling: @blei_latent_2003 (the paper that "mainstreamed" topic modeling and thus text-as-data more generally[^tad-lda]).
+    * Word Embeddings: @mikolov_distributed_2013, though the REAL foundation is JR Firth's 1957 exclamation "You shall know a word by the company it keeps!" (@firth_papers_1957, or see [here](http://cs.brown.edu/courses/csci2952d/readings/lecture1-firth.pdf) on page 11), which gave rise to the "Firthian distributional hypothesis" that word embeddings simply... implement :P
+    * Neural Networks: This is the technology that... makes 2018 an interesting time to be alive. For example all of Google Translate's improvements in translation accuracy over its first 12 years (with hundreds of full-time researchers and software engineers) [were DWARFED](https://www.youtube.com/watch?v=nR74lBO5M3s) by simply switching the system from the complex statistical model they had developed to... dropping shit into a neural net and seeing what comes out. We still don't know what they're doing or why they're so effective. I'll leave you with Andrej Karpathy's aptly-named ["The Unreasonable Effectiveness of Recurrent Neural Networks"](http://karpathy.github.io/2015/05/21/rnn-effectiveness/) (Generate infinitely many new Neural Bibles! Neural Irish folk songs! Neural Stir-Fry Recipes! ...a deep rabbithole for sure.)
+
+# Bibliography
+
+[^excurs]: Yes, apparently the plural of "excursus" is "excursuses"... I had been pretentiously saying "excursi" for years :(.
+[^tad-lda]: Actually, a graph of the frequency of text-as-data papers before and after this publication would be fascinating... 10 bonus points to anyone who does it!
+[^human]: I actually probably spend more time reading papers and books from the Humanities than I do the Social Sciences. At the end of the day, in my view, there's a lot more text (more importantly, a lot more *interesting* text) in the corpora of various Humanities subfields than in any social science... Not a sermon, just a thought. 10 points if you get that reference.
+[^stm]: You'll probably quickly notice that this paper (and the presentation) are kind of auxiliary to the "main event", their R package called `stm` (Structural Topic Modeling). I'll talk about it in the workshop, but basically
+1. I think `stm` provides a sort of semantic "framing"/vocabulary of text-as-data that I think is *perfect* for working at the intersection of social science and computer science, and yet
+2. I have never been able to get `stm` to work :| so I'll be using a different set of libraries. But just know that, IN THEORY, `stm` is the way I would recommend *thinking about* your models and their estimation.

@@ -1,0 +1,31 @@
+---
+title: "Citation Parsing"
+author: "Jeff Jacobs"
+date: "11/27/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,run-parser}
+library(RCurl)
+pdf_file <- "W4_files/ChaneyWallachConnellyBlei2016.pdf"
+cite_url <- "http://citeseerextractor.ist.psu.edu:8080/extractor"
+postForm(
+  cite_url,
+  file = fileUpload(
+    filename = path.expand(pdf_file),
+    contentType = "application/pdf"
+  ),.encoding="utf-8")
+#"curl -F myfile=@/path/to/file.pdf "http://citeseerextractor.ist.psu.edu:8080/extractor")
+
+library(httr)
+result <- POST(
+  url = cite_url,
+  body = upload_file(
+    path =  path.expand(pdf_file),
+    type = 'application/pdf'),
+  verbose()
+)

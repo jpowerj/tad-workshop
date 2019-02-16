@@ -66,7 +66,7 @@ blog_html
 ```
 Now, it's time to quickly leap to the next level of R awesomeness, by way of the ["TIDYVERSE"](https://www.tidyverse.org/). Long story short, the tidyverse is a set of R packages with a unified "semantic philosophy" about how coding should work, and to be honest it feels much closer to how my brain works when doing "data science" than standard R syntax does. I don't encounter R enough to really know how many people use standard R functions vs. how many have entered the tidyverse, but it's definitely a not-insignificant number. I'd be willing to bet a majority of "data scientists" use the tidyverse.
 
-[TODO: tidyverse tutorial]
+<!-- [TODO: tidyverse tutorial] -->
 
 So, now that you know the basics of how `dplyr` works, let's use it to "pipe" the html code we downloaded into a simple processing pipeline:
 ```{r,search-html}
@@ -324,7 +324,7 @@ Since I don't want to have my Google API Key saved in this tutorial, I load it f
 * `%d` if you're going to fill it in with an integer
 * `%f` if you're going to fill it in with a float (number with decimal points)
 ```{r,kgraph}
-api_key <- readLines("Web_Scraping_files/google_api_key.secret")
+api_key <- readLines("../gcloud/kgraph_api_teaching.secret")
 query_template <- "https://kgsearch.googleapis.com/v1/entities:search?query=%s&key=%s&limit=%d"
 query_url <- sprintf(query_template, "south+african+border+war", api_key, 3)
 kg_json <- fromJSON(query_url)

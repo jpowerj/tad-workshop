@@ -19,7 +19,7 @@ In this tutorial, we'll be talking about this final method, Named Entity Recogni
 
 ```{r,init-api}
 library(googleLanguageR)
-gl_auth("~/gcloud_nlp/TL-NLP-e6110f370407.json")
+gl_auth("../gcloud/nlp_api_teaching.json")
 gramsci <- "The subaltern classes, by definition, are not unified and cannot unite until they are able to become a 'State': their history, therefore, is intertwined with that of civil society, and thereby with the history of States and groups of States"
 greenwald <- c("If fighting Israeli occupying forces is barred as 'terrorism,' and nonviolent boycotts against Israel are barred as 'anti-Semitism,' then what is considered a legitimate means for Palestinians and their allies to resist and end the decades-long, illegal Israeli occupation?","The answer is: nothing.","Palestinians are obliged to submit to Israeli occupation in a way that none of the people demanding that would ever themselves submit to occupation of their land.","All forms of resistance to Israeli occupation are deemed illegitimate.","That, manifestly, is the whole point of all of this.")
 wiki <- "In June 1982, the Israel Defense Forces invaded Lebanon with the intention of rooting out the PLO."

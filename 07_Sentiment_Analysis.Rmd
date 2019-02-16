@@ -98,7 +98,7 @@ To interface with the Google Language API programmatically, we will use the extr
 
 ```{r,goog-auth}
 library(googleLanguageR)
-gl_auth("~/gcloud_nlp/google_language_api_key.json")
+gl_auth("../gcloud/nlp_api_teaching.json")
 ```
 
 ```{r,goog-api}

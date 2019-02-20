@@ -26,23 +26,29 @@ I emailed [this survey](https://goo.gl/forms/N9ES0LlcANSQQaP43) out to get a pee
 
 Last but definitely not least, you'll be in a really good spot if you complete this [Interactive R Tutorial](https://www.datacamp.com/courses/free-introduction-to-r) before the first workshop. But I'll still go over the topics briefly just in case.
 
-## First Workshop: Gentle But SPEEDY Introduction to R
+## Workshop Sessions
 
-Full tutorial now up and ready **[here](W1_Introduction_to_R.html)**!
+1. First Workshop: [A Gentle But SPEEDY Introduction to R](01_Introduction_to_R.html)
 
-## Second Workshop: Web Scraping
+2. Second Workshop: [Web Scraping](02_Web_Scraping.html).
 
-Available **[here](W2_Web_Scraping.html)**.
+3. Third Workshop Part I: [TF-IDF](03_Frequency_Analysis.html)
 
-## Third Workshop: TF-IDF, Topic Modeling
+4. Third Workshop Part II: [Topic Modeling with `ggplot2`](04_Topic_Modeling_ggplot2.html)
 
-* TF-IDF tutorial available **[here](W3_Frequency_Analysis.html)**
-* Topic Modeling tutorial **[here](W3_Topic_Modeling.html)**
+5. Fourth Workshop: [Named Entity Recognition](05_Named_Entity_Recognition.html)
 
-## Fourth Workshop: Machine Learning with Text, Sentiment Analysis
+* UPDATE: Unfortunately there won't be a Dynamic Topic Modeling tutorial since R doesn't seem to have any library for estimating a DTM. ([Python, on the other hand...](https://radimrehurek.com/gensim/models/ldaseqmodel.html)) So I've replaced it with the [Machine Learning with Text tutorial](06_Machine_Learning.Rmd) below.
 
-* Sentiment Analysis tutorial **[here](W4_Sentiment_Analysis.html)**
-* UPDATE: Unfortunately there won't be a Dynamic Topic Modeling tutorial since R doesn't seem to have any library for estimating a DTM. ([Python, on the other hand...](https://radimrehurek.com/gensim/models/ldaseqmodel.html)) So I've replaced it with a [Machine Learning with Text tutorial](W4_Machine_Learning.Rmd)!
+## Bonus Material
+
+Stuff I wasn't able to get to during the workshop, plus a few tutorials I've led more recently:
+
+6. [Machine Learning with Text](06_Machine_Learning.html)
+
+7. [Sentiment Analysis](07_Sentiment_Analysis.html)
+
+8. [Stylometry](08_Stylometry.html)
 
 <!--
 #### Data analysis redux: *Non*-linear models

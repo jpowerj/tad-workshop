@@ -15,7 +15,7 @@ The answer to this question is actually illustrated by the results that the [Goo
 
 * ![](W3_files/img/tree.png)
 
-In this tutorial, we'll be talking about this final method, Named Entity Recognition. Unfortunately, because of 
+In this tutorial, we'll be talking about this final method, Named Entity Recognition.
 
 ```{r,init-api}
 library(googleLanguageR)
